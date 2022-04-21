@@ -154,3 +154,8 @@ Matrix operator*(const Matrix& matrix, double num)
 
 	return newMatrix;
 }
+
+Matrix operator*(double num, const Matrix& matrix)
+{
+	return matrix*num;
+}
