@@ -34,6 +34,7 @@ public:
 
 	friend Matrix operator*(const Matrix&, const Matrix&);
 	friend Matrix operator*(const Matrix&, double);
+	friend Matrix operator*(double num, const Matrix& matrix);
 
 private:
 	int GetDeterminator() const;
