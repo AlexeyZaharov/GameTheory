@@ -127,7 +127,7 @@ double GetFuncValue(double a, double b, double c, double d, double e, double x, 
 	return a*x*x + b*y*y + c*x*y + d*x + e*y;
 }
 
-std::tuple<double, double, double> AnaliticMethod—onvex—oncaveGame(double a, double b, double c, double d, double e)
+std::tuple<double, double, double> AnaliticMethod√ëonvex√ëoncaveGame(double a, double b, double c, double d, double e)
 {
 	double y = (2 * a * e - c * d) / (c * c - 4 * a * b);
 	double x = y >= -d/c ? -(c * y + d) / (2 * a) : 0;
@@ -135,7 +135,7 @@ std::tuple<double, double, double> AnaliticMethod—onvex—oncaveGame(double a, dou
 	return { x, y, H };
 }
 
-std::tuple<double, double, double> NumericMethod—onvex—oncaveGame(double a, double b, double c, double d, double e)
+std::tuple<double, double, double> NumericMethod√ëonvex√ëoncaveGame(double a, double b, double c, double d, double e)
 {
 	double x, y, H;
 	for (auto i = 1; i < 10; ++i)
@@ -181,4 +181,104 @@ std::tuple<double, double, double> NumericMethod—onvex—oncaveGame(double a, doub
 	}
 
 	return { x, y, H };
+}
+
+std::vector<std::pair<size_t, size_t>> GetNashOptimums(const Matrix& matrixA, const Matrix& matrixB)
+{
+	std::vector<std::pair<size_t, size_t>> optimums;
+
+	const auto& tableA = matrixA.GetMatrix();
+	std::unordered_map<size_t, std::vector<size_t>> optimumsA;
+	
+	const auto& tableB = matrixB.GetMatrix();
+	std::unordered_map<size_t, std::vector<size_t>> optimumsB;
+
+	for (size_t i = 0; i < tableA.size(); ++i)
+	{
+		auto maxInRow = tableA[i][0];
+		for (size_t j = 0; j < tableA[i].size(); ++j)
+		{
+			if (tableA[i][j] > maxInRow)
+			{
+				maxInRow = tableA[i][j];
+			}
+		}
+
+		optimumsA[i] = std::vector<size_t>();
+		for (size_t j = 0; j < tableA[i].size(); ++j)
+		{
+			if (tableA[i][j] == maxInRow)
+			{
+				optimumsA[i].push_back(j);
+			}
+		}
+	}
+
+	size_t i = 0;
+	for (size_t j = 0; j < tableB[0].size(); ++j)
+	{
+		auto maxInColumn = tableB[0][j];
+		for (i = 0; i < tableB.size(); ++i)
+		{
+			if (tableB[i][j] > maxInColumn)
+			{
+				maxInColumn = tableB[i][j];
+			}
+		}
+
+		optimumsB[j] = std::vector<size_t>();
+		for (i = 0; i < tableB.size(); ++i)
+		{
+			if (tableB[i][j] == maxInColumn)
+			{
+				optimumsB[j].push_back(i);
+			}
+		}
+	}
+
+	for (const auto& elem : optimumsA)
+	{
+		if (elem.second.size() == 1 && optimumsB[elem.second[0]].size() == 1 && optimumsB[elem.second[0]][0] == elem.first)
+		{
+			optimums.push_back({elem.first, elem.second[0]});
+		}
+	}
+
+	return optimums;
+}
+
+std::vector<std::pair<size_t, size_t>> GetParetoOptimums(const Matrix& matrixA, const Matrix& matrixB)
+{
+	std::vector<std::pair<size_t, size_t>> optimums;
+
+	const auto& tableA = matrixA.GetMatrix();
+	const auto& tableB = matrixB.GetMatrix();
+
+	auto IsPointParetoOptimum = [&tableA, &tableB](const std::pair<double, double>& point)
+	{
+		for (size_t i = 0; i < tableA.size(); ++i)
+		{
+			for (size_t j = 0; j < tableA[i].size(); ++j)
+			{
+				if (tableA[i][j] > point.first && tableB[i][j] > point.second)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	};
+
+	for (size_t i = 0; i < tableA.size(); ++i)
+	{
+		for (size_t j = 0; j < tableA[i].size(); ++j)
+		{
+			if (IsPointParetoOptimum({tableA[i][j], tableB[i][j]}))
+			{
+				optimums.push_back({i, j});
+			}
+		}
+	}
+
+	return optimums;
 }
