@@ -31,7 +31,7 @@ void writeTable(const std::vector<std::vector<std::pair<double, double>>>& table
 			std::pair<size_t, size_t> point = {i, j-1};
 			std::string color = "";
 			if (j == 0)
-				std::cout << '|';
+				std::cout << "\033[37m|";
 			else
 			{
 				if (std::find(NashOptimums.begin(), NashOptimums.end(), point) != NashOptimums.end() && std::find(ParetoOptimums.begin(), ParetoOptimums.end(), point) != ParetoOptimums.end())
@@ -53,8 +53,12 @@ void writeTable(const std::vector<std::vector<std::pair<double, double>>>& table
 				std::cout << color << std::setw(2) << '(' << std::setprecision(2) << std::fixed << std::setw(6) << table[i][j - 1].first << ", " << std::setw(6) << table[i][j - 1].second << std::setw(2) << ')' << " |";
 			}
 		}
-		std::cout << std::endl << ' ' << std::setw(20 * table[i].size()) << std::setfill('-') << ' ' << std::endl << std::setfill(' ') << std::endl;
+		std::cout << std::endl << "\033[37m " << std::setw(20 * table[i].size()) << std::setfill('-') << ' ' << std::endl << std::setfill(' ') << std::endl;
 	}
+
+	std::cout << "\033[31mRED\033[37m - Nash and Pareto optimals" << std::endl;
+	std::cout << "\033[32mGREEN\033[37m - Nash optimals" << std::endl;
+	std::cout << "\033[34mBLUE\033[37m - Pareto optimals" << std::endl;
 }
 
 class Matrix
