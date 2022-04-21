@@ -50,7 +50,7 @@ void writeTable(const std::vector<std::vector<std::pair<double, double>>>& table
 				{
 					color = "\033[37m";//system("Color 0F"); // WHITE
 				}
-				std::cout << color << std::setw(2) << '(' << std::setprecision(2) << std::fixed << std::setw(6) << table[i][j - 1].first << ", " << std::setw(6) << table[i][j - 1].second << std::setw(2) << ')' << " |";
+				std::cout << color << std::setw(2) << '(' << std::setprecision(2) << std::fixed << std::setw(6) << table[i][j - 1].first << ", " << std::setw(6) << table[i][j - 1].second << std::setw(2) << ')' << "\033[37m |";
 			}
 		}
 		std::cout << std::endl << "\033[37m " << std::setw(20 * table[i].size()) << std::setfill('-') << ' ' << std::endl << std::setfill(' ') << std::endl;
