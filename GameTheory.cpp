@@ -101,8 +101,6 @@ void LR2()
 Table GetRandomTable10On10()
 {
 	Table table;
-	std::srand(std::time(0));
-
 	for (size_t i = 0; i < 10; ++i)
 	{
 		std::vector<double> vec;
@@ -118,6 +116,7 @@ Table GetRandomTable10On10()
 
 void LR3_random()
 {
+	std::srand(std::time(0));
 	Matrix matrixA(GetRandomTable10On10());
 	Matrix matrixB(GetRandomTable10On10());
 
