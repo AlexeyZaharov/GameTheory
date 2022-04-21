@@ -6,6 +6,9 @@
 #include <random>
 #include <string>
 
+#include <algorithm>
+#include <unordered_map>
+
 std::tuple<Table, Table, double> AnaliticMethodMixedStrategy(const Matrix& matrix)
 {
 	Table u_ = {
