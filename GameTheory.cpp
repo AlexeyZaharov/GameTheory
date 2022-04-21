@@ -96,7 +96,106 @@ void LR2()
 	std::cout << "H: " << H << std::endl;
 }
 
-void LR3()
+Table GetRandomTable10On10()
+{
+	Table table;
+	std::srand(std::time(0));
+
+	for (size_t i = 0; i < 10; ++i)
+	{
+		std::vector<double> vec;
+		for (size_t j = 0; j < 10; ++j)
+		{
+			vec.push_back(std::rand() % 20);
+		}
+		table.push_back(vec);
+	}
+
+	return table;
+}
+
+void LR3_random()
+{
+	Matrix matrixA(GetRandomTable10On10());
+	Matrix matrixB(GetRandomTable10On10());
+
+	std::cout << "Random matrix:" << std::endl;
+
+	std::vector<std::vector<std::pair<double, double>>> matrix;
+
+	for (size_t i = 0; i < matrixA.GetMatrix().size(); ++i)
+	{
+		std::vector<std::pair<double, double>> row;
+		for (size_t j = 0; j < matrixB.GetMatrix()[i].size(); ++j)
+		{
+			row.push_back({matrixA.GetMatrix()[i][j], matrixB.GetMatrix()[i][j]});
+		}
+		matrix.push_back(row);
+	}
+
+	writeTable(matrix, GetNashOptimums(matrixA, matrixB), GetParetoOptimums(matrixA, matrixB));
+}
+
+void LR3_check()
+{
+	Table tableA1 = {
+		{1, 2},
+		{1, 0}
+	};
+	Table tableB1 = {
+		{1, 1},
+		{2, 0}
+	};
+
+	Table tableA2 = {
+		{4, 0},
+		{0, 1}
+	};
+	Table tableB2 = {
+		{1, 0},
+		{0, 4}
+	};
+
+	Table tableA3 = {
+		{-5, 0},
+		{-10, -1}
+	};
+	Table tableB3 = {
+		{-5, -10},
+		{0, -1}
+	};
+
+	std::vector<std::pair<std::pair<Table, Table>, std::string>> tuple = {
+		{{tableA1, tableB1}, std::string("Perekrestok")},
+		{{tableA2, tableB2}, std::string("Semeinyi spor")},
+		{{tableA3, tableB3}, std::string("Zakluchennye")}
+	};
+
+	for (size_t i = 0; i < 3; ++i)
+	{
+		Matrix matrixA(tuple[i].first.first);
+		Matrix matrixB(tuple[i].first.second);
+
+		std::cout << tuple[i].second << std::endl;
+
+		std::vector<std::vector<std::pair<double, double>>> matrix;
+
+		for (size_t i = 0; i < matrixA.GetMatrix().size(); ++i)
+		{
+			std::vector<std::pair<double, double>> row;
+			for (size_t j = 0; j < matrixA.GetMatrix()[i].size(); ++j)
+			{
+				row.push_back({matrixA.GetMatrix()[i][j], matrixB.GetMatrix()[i][j]});
+			}
+			matrix.push_back(row);
+		}
+
+		writeTable(matrix, GetNashOptimums(matrixA, matrixB), GetParetoOptimums(matrixA, matrixB));
+	}
+}
+
+
+void LR3_with_matrix()
 {
 	Table tableA = {
 		{5, 7},
@@ -128,10 +227,6 @@ void LR3()
 
 	writeTable(matrix, GetNashOptimums(matrixA, matrixB), GetParetoOptimums(matrixA, matrixB));
 
-	std::cout << "\033[31mRED\033[37m - Nash and Pareto optimals" << std::endl;
-	std::cout << "\033[32mGREEN\033[37m - Nash optimals" << std::endl;
-	std::cout << "\033[34mBLUE\033[37m - Pareto optimals" << std::endl;
-
 	Table u_ = {
 		{1, 1}
 	};
@@ -153,6 +248,13 @@ void LR3()
 	std::cout << "X: " << std::endl;
 	writeTable(X);
 	std::cout << "v2 = " << v2 << std::endl;
+}
+
+void LR3()
+{
+	LR3_check();
+	LR3_random();
+	LR3_with_matrix();
 }
 
 int main()
