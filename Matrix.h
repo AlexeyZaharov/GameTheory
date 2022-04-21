@@ -22,6 +22,41 @@ void writeTable(const std::vector<std::vector<T>>& table)
 	}
 }
 
+void writeTable(const std::vector<std::vector<std::pair<double, double>>>& table, const std::vector<std::pair<size_t, size_t>>& NashOptimums, const std::vector<std::pair<size_t, size_t>>& ParetoOptimums)
+{
+	for (size_t i = 0; i < table.size(); ++i)
+	{
+		for (size_t j = 0; j < table[i].size() + 1; ++j)
+		{
+			std::pair<size_t, size_t> point = {i, j-1};
+			std::string color = "";
+			if (j == 0)
+				std::cout << '|';
+			else
+			{
+				if (std::find(NashOptimums.begin(), NashOptimums.end(), point) != NashOptimums.end() && std::find(ParetoOptimums.begin(), ParetoOptimums.end(), point) != ParetoOptimums.end())
+				{
+					color = "\033[31m";//system("Color 0A"); // RED
+				}
+				else if (std::find(NashOptimums.begin(), NashOptimums.end(), point) != NashOptimums.end())
+				{
+					color = "\033[32m";//system("Color 0B"); // GREEN
+				}
+				else if (std::find(ParetoOptimums.begin(), ParetoOptimums.end(), point) != ParetoOptimums.end())
+				{
+					color = "\033[34m";//system("Color 0E"); // BLUE
+				}
+				else
+				{
+					color = "\033[37m";//system("Color 0F"); // WHITE
+				}
+				std::cout << color << std::setw(2) << '(' << std::setprecision(2) << std::fixed << std::setw(6) << table[i][j - 1].first << ", " << std::setw(6) << table[i][j - 1].second << std::setw(2) << ')' << " |";
+			}
+		}
+		std::cout << std::endl << ' ' << std::setw(20 * table[i].size()) << std::setfill('-') << ' ' << std::endl << std::setfill(' ') << std::endl;
+	}
+}
+
 class Matrix
 {
 public:
