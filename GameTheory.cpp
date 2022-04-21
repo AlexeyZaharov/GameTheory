@@ -2,6 +2,8 @@
 #include "Matrix.h"
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 void LR1()
 {
