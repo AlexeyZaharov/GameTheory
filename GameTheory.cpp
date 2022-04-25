@@ -258,9 +258,78 @@ void LR3()
 	LR3_with_matrix();
 }
 
+
+void LR5()
+{
+	std::unordered_map<std::bitset<4>, int> haracteristicalFunction;
+	haracteristicalFunction.emplace(0, 0);
+	haracteristicalFunction.emplace(8, 3);
+	haracteristicalFunction.emplace(4, 2);
+	haracteristicalFunction.emplace(2, 3);
+	haracteristicalFunction.emplace(1, 2);
+	haracteristicalFunction.emplace(12, 6);
+	haracteristicalFunction.emplace(10, 6);
+	haracteristicalFunction.emplace(9, 5);
+	haracteristicalFunction.emplace(6, 6);
+	haracteristicalFunction.emplace(5, 4);
+	haracteristicalFunction.emplace(3, 7);
+	haracteristicalFunction.emplace(14, 10);
+	haracteristicalFunction.emplace(13, 10);
+	haracteristicalFunction.emplace(11, 11); // initial value = 9
+	haracteristicalFunction.emplace(7, 10);
+	haracteristicalFunction.emplace(15, 15); // initial value = 12
+	auto ShepliVector = GetRationalDelej(haracteristicalFunction);
+
+	for (size_t i = 0; i < ShepliVector.size(); ++i)
+	{
+		std::cout << std::setprecision(2) << std::fixed << "X" << i + 1 << "(v) = " << ShepliVector[i] << std::endl;
+	}
+
+	std::cout << "Group rationalization:" << std::endl;
+	std::cout << "X" << 1 << "(v) + " << "X" << 2 << "(v) + " << "X" << 3 << "(v) + " << "X" << 4 << "(v) = " << "v(I)" << std::endl;
+	std::cout << std::setprecision(2) << std::fixed << ShepliVector[0] << " + " << ShepliVector[1] << " + " << ShepliVector[2] << " + " << ShepliVector[3] << " = " << haracteristicalFunction[std::bitset<4>(15)] << std::endl;
+
+	std::cout << "Individual rationalization:" << std::endl;
+	for (size_t i = 0; i < 4; ++i)
+	{
+		std::cout << "X" << i + 1 << "(v) >= v({" << i + 1 << "})" << std::endl;
+		std::cout << ShepliVector[i] << " >= " << haracteristicalFunction[std::bitset<4>(16 >> (i + 1))] << std::endl;
+	};
+}
+
 int main()
 {
-	LR1();
-	LR2();
+	std::cout << "Hello, Nataly Sergeevna! Choose LR1 (1), LR2 (2), LR3 (3) or LR5(5):" << std::endl;
+	size_t LR = 0;
+	std::cin >> LR;
+	switch(LR)
+	{
+	case 1:
+	{
+		LR1();
+		break;
+	}
+	case 2:
+	{
+		LR2();
+		break;
+	}
+	case 3:
+	{
+		LR3();
+		break;
+	}
+	case 5:
+	{
+		LR5();
+		break;
+	}
+	default:
+	{
+	}
+	}
+
+	std::cout << "Goodbye!" << std::endl;
 	return 0;
 }
+
