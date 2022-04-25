@@ -1,5 +1,6 @@
 #include "Methods.h"
 #include "Matrix.h"
+#include "LR6.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -299,7 +300,7 @@ void LR5()
 
 int main()
 {
-	std::cout << "Hello, Nataly Sergeevna! Choose LR1 (1), LR2 (2), LR3 (3) or LR5(5):" << std::endl;
+	std::cout << "Hello, Nataly Sergeevna! Choose LR1 (1), LR2 (2), LR3 (3), LR5(5) or LR6(6):" << std::endl;
 	size_t LR = 0;
 	std::cin >> LR;
 	switch(LR)
@@ -322,6 +323,11 @@ int main()
 	case 5:
 	{
 		LR5();
+		break;
+	}
+	case 6:
+	{
+		LR6();
 		break;
 	}
 	default:
